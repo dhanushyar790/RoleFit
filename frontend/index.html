@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RoleFit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F6F4;
+    --panel: #FFFFFF;
+    --panel-2: #F0F0EE;
+    --line: #E2E2DE;
+    --text: #2B2D33;
+    --muted: #84858C;
+    --primary: #5B6B73;     /* muted slate teal */
+    --primary-dim: rgba(91,107,115,0.08);
+    --accent: #A18B5F;      /* soft taupe gold */
+    --positive: #5C8A70;
+    --negative: #B06A6A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+  }
+  .display{font-family:'Source Serif 4', serif;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  header{
+    padding:26px 40px; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line); background:var(--panel);
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand-mark{
+    width:38px; height:38px; border-radius:8px;
+    background:var(--primary); position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .brand-mark svg{width:20px; height:20px; stroke:#fff;}
+  .icon-sm{width:15px; height:15px; stroke:currentColor; vertical-align:-3px; margin-right:6px;}
+  h2 svg.icon-sm{stroke:var(--muted);}
+  .tab svg.icon-sm{stroke:currentColor; margin-right:5px;}
+  .brand h1{font-size:20px; margin:0; font-weight:700; letter-spacing:0.2px;}
+  .brand p{margin:0; font-size:12px; color:var(--muted);}
+
+  main{max-width:1180px; margin:0 auto; padding:48px 40px 100px;}
+
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:26px;
+    box-shadow:0 1px 2px rgba(27,35,48,0.04);
+  }
+  .panel h2{font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:0 0 16px; font-weight:600;}
+
+  .dropzone{
+    border:1.5px dashed var(--line); border-radius:6px; padding:30px 20px; text-align:center;
+    cursor:pointer; transition:.2s; background:var(--panel-2);
+  }
+  .dropzone:hover{border-color:var(--primary);}
+  .dropzone.has-files{border-color:var(--primary); background:var(--primary-dim);}
+  .dropzone .icon{font-size:22px; margin-bottom:8px; display:block; color:var(--primary);}
+  .dropzone p{margin:4px 0; font-size:13px; color:var(--muted);}
+  .filelist{margin-top:12px; text-align:left; font-size:13px;}
+  .filelist div{padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:5px; margin-bottom:6px; display:flex; justify-content:space-between;}
+
+  textarea{
+    width:100%; min-height:170px; resize:vertical; background:var(--panel-2);
+    border:1px solid var(--line); border-radius:6px; color:var(--text); padding:14px;
+    font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.6;
+  }
+  textarea:focus{outline:none; border-color:var(--primary);}
+
+  .btn{
+    margin-top:24px; width:100%; padding:14px; border-radius:6px; border:none;
+    background:var(--primary); color:#fff; font-weight:600; font-size:14.5px;
+    cursor:pointer; transition:.15s; font-family:'Inter',sans-serif;
+    letter-spacing:0.2px;
+  }
+  .btn:hover{background:#49565D;}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+
+  .btn-secondary{
+    margin-top:18px; width:auto; padding:10px 18px; border-radius:6px;
+    border:1px solid var(--negative); background:transparent; color:var(--negative);
+    font-weight:600; font-size:13px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .btn-secondary:hover{background:rgba(162,59,59,0.06);}
+
+  .tabs{display:flex; gap:6px; margin:36px 0 22px; border-bottom:1px solid var(--line);}
+  .tab{
+    padding:10px 18px; cursor:pointer; color:var(--muted); font-size:14px; font-weight:500;
+    border-bottom:2px solid transparent;
+  }
+  .tab.active{color:var(--primary); border-color:var(--primary); font-weight:600;}
+
+  .hidden{display:none !important;}
+
+  /* Score gauge - static, professional ring (no sweep animation) */
+  .radar-gauge{
+    width:200px; height:200px; margin:0 auto; position:relative; border-radius:50%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+  }
+  .radar-gauge svg{position:absolute; inset:0;}
+  .radar-gauge .ring{fill:none; stroke:var(--line); stroke-width:1;}
+  .radar-score{
+    position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .radar-score .num{font-size:38px; font-weight:700; font-family:'Source Serif 4',serif; color:var(--primary);}
+  .radar-score .label{font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:2px;}
+
+  .stat-row{display:flex; gap:14px; margin-top:20px;}
+  .stat-card{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:6px; padding:14px 16px;}
+  .stat-card .v{font-size:22px; font-weight:700; font-family:'Source Serif 4',serif;}
+  .stat-card .l{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px;}
+
+  .skill-chip{
+    display:inline-block; padding:5px 12px; margin:4px 5px 0 0; border-radius:4px; font-size:12.5px;
+  }
+  .skill-chip.match{background:rgba(46,125,91,0.10); color:var(--positive); border:1px solid rgba(46,125,91,0.3);}
+  .skill-chip.miss{background:rgba(162,59,59,0.08); color:var(--negative); border:1px solid rgba(162,59,59,0.25);}
+
+  .suggestion-item{
+    display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.6;
+  }
+  .suggestion-item:last-child{border-bottom:none;}
+  .suggestion-item .bullet{color:var(--accent); flex-shrink:0;}
+
+  .summary-box{
+    background:var(--panel-2); border-left:3px solid var(--primary); border-radius:4px;
+    padding:14px 16px; font-size:13.5px; line-height:1.6; color:var(--muted); margin-top:6px;
+  }
+
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{text-align:left; color:var(--muted); font-weight:600; padding:10px 12px; border-bottom:1px solid var(--line); text-transform:uppercase; font-size:11px; letter-spacing:.5px;}
+  td{padding:12px; border-bottom:1px solid var(--line); vertical-align:top;}
+
+  .empty-state{text-align:center; padding:60px 20px; color:var(--muted);}
+  .empty-state .icon{font-size:28px; display:block; margin-bottom:10px; opacity:.6;}
+
+  .spinner{
+    width:16px; height:16px; border:2.5px solid rgba(255,255,255,0.35); border-top-color:#fff;
+    border-radius:50%; display:inline-block; animation:spin .7s linear infinite; vertical-align:middle; margin-right:8px;
+  }
+  @keyframes spin{ to{transform:rotate(360deg);} }
+
+  .result-card{margin-bottom:22px;}
+  .result-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .result-head .fname{font-weight:600; font-size:15px;}
+  .badge{font-size:11px; padding:4px 10px; border-radius:4px; background:var(--panel-2); color:var(--muted); border:1px solid var(--line);}
+
+  @media(max-width:860px){
+    .grid-2{grid-template-columns:1fr;}
+    main{padding:30px 20px;}
+    header{padding:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v3l2 2"></path></svg>
+    </div>
+    <div>
+      <h1 class="display">RoleFit</h1>
+      <p>Resume-to-role fit analysis</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <div class="tab active" data-tab="analyze"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Scan</div>
+    <div class="tab" data-tab="history"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 15"></polyline></svg>History</div>
+    <div class="tab" data-tab="rewrite"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>Bullet Rewriter</div>
+  </div>
+
+  <!-- ANALYZE TAB -->
+  <section id="tab-analyze">
+    <div class="grid-2">
+      <div class="panel">
+        <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Resume(s)</h2>
+        <div class="dropzone" id="dropzone">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;margin:0 auto 8px;display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <p><strong>Click to upload</strong> or drag files here</p>
+          <p>PDF, DOCX or TXT — multiple files supported</p>
+          <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt" style="display:none">
+        </div>
+        <div class="filelist" id="filelist"></div>
+      </div>
+      <div class="panel">
+        <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Target Job Description</h2>
+        <textarea id="jdText" placeholder="Paste the full job description here..."></textarea>
+      </div>
+    </div>
+    <button class="btn" id="scanBtn"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:#fff;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>Run Scan</button>
+
+    <div id="results" style="margin-top:36px;"></div>
+  </section>
+
+  <!-- HISTORY TAB -->
+  <section id="tab-history" class="hidden">
+    <div class="panel">
+      <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 15"></polyline></svg>Scan History</h2>
+      <div id="historyContent"></div>
+      <button class="btn-secondary" id="clearHistoryBtn"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>Clear History</button>
+    </div>
+  </section>
+
+  <!-- REWRITE TAB -->
+  <section id="tab-rewrite" class="hidden">
+    <div class="grid-2">
+      <div class="panel">
+        <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>Current Bullet Point</h2>
+        <textarea id="bulletInput" placeholder="e.g. Worked on backend APIs for the team project" style="min-height:100px;"></textarea>
+        <h2 style="margin-top:20px;"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Job Description Context</h2>
+        <textarea id="bulletJD" placeholder="Paste relevant job description..."></textarea>
+        <button class="btn" id="rewriteBtn"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke:#fff;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>Rewrite</button>
+      </div>
+      <div class="panel">
+        <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Improved Version</h2>
+        <div id="rewriteOutput" class="empty-state"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;margin:0 auto 10px;display:block;opacity:.6;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>Your improved bullet point will appear here</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const API_BASE = "/api";
+
+// ---------- TAB SWITCHING ----------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+    if(tab.dataset.tab === 'history') loadHistory();
+  });
+});
+
+// ---------- FILE UPLOAD ----------
+let selectedFiles = [];
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+const filelist = document.getElementById('filelist');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('has-files'); });
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+function handleFiles(files){
+  selectedFiles = Array.from(files);
+  dropzone.classList.toggle('has-files', selectedFiles.length > 0);
+  filelist.innerHTML = selectedFiles.map(f =>
+    `<div><span>${f.name}</span><span>${(f.size/1024).toFixed(0)} KB</span></div>`
+  ).join('');
+}
+
+// ---------- SCAN ----------
+document.getElementById('scanBtn').addEventListener('click', async () => {
+  const jdText = document.getElementById('jdText').value.trim();
+  const btn = document.getElementById('scanBtn');
+  const resultsEl = document.getElementById('results');
+
+  if(selectedFiles.length === 0 || !jdText){
+    alert('Please upload at least one resume and paste a job description.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Scanning...';
+  resultsEl.innerHTML = '';
+
+  const formData = new FormData();
+  formData.append('jd_text', jdText);
+  selectedFiles.forEach(f => formData.append('files', f));
+
+  try {
+    const res = await fetch(`${API_BASE}/analyze`, { method: 'POST', body: formData });
+    if(!res.ok){
+      const errText = await res.text();
+      throw new Error(`Server returned ${res.status}: ${errText.slice(0,200)}`);
+    }
+    const data = await res.json();
+    renderResults(data.results);
+  } catch(err) {
+    resultsEl.innerHTML = `<div class="empty-state">Something went wrong: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Run Scan';
+  }
+});
+
+function renderResults(results){
+  const resultsEl = document.getElementById('results');
+
+  if(results.length > 1){
+    let rankRows = results
+      .slice().sort((a,b) => b.match_percentage - a.match_percentage)
+      .map((r,i) => `<tr><td>#${i+1}</td><td>${r.filename}</td><td>${r.match_percentage}%</td><td>${r.semantic_score}%</td></tr>`)
+      .join('');
+    resultsEl.innerHTML += `
+      <div class="panel" style="margin-bottom:22px;">
+        <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>Ranking</h2>
+        <table><thead><tr><th>Rank</th><th>Resume</th><th>LLM Match</th><th>Semantic</th></tr></thead>
+        <tbody>${rankRows}</tbody></table>
+      </div>`;
+  }
+
+  results.forEach(r => {
+    const matchChips = (r.matching_skills||[]).map(s => `<span class="skill-chip match">${s}</span>`).join('') || '<span style="color:var(--muted); font-size:13px;">None detected</span>';
+    const missChips = (r.missing_skills||[]).map(s => `<span class="skill-chip miss">${s}</span>`).join('') || '<span style="color:var(--muted); font-size:13px;">None — strong coverage</span>';
+    const suggestions = (r.improvement_suggestions||[]).map(s => `<div class="suggestion-item"><span class="bullet">&mdash;</span><span>${s}</span></div>`).join('');
+
+    resultsEl.innerHTML += `
+      <div class="panel result-card">
+        <div class="result-head">
+          <span class="fname">${r.filename}</span>
+          <span class="badge">Semantic ${r.semantic_score}%</span>
+        </div>
+        <div class="grid-2">
+          <div>
+            <div class="radar-gauge">
+              <div class="radar-score">
+                <span class="num mono">${r.match_percentage}%</span>
+                <span class="label">Match</span>
+              </div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-card"><div class="v mono">${(r.matching_skills||[]).length}</div><div class="l">Matched</div></div>
+              <div class="stat-card"><div class="v mono">${(r.missing_skills||[]).length}</div><div class="l">Missing</div></div>
+            </div>
+          </div>
+          <div>
+            <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Matching Skills</h2>
+            <div>${matchChips}</div>
+            <h2 style="margin-top:18px;"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Missing Skills</h2>
+            <div>${missChips}</div>
+          </div>
+        </div>
+        <h2 style="margin-top:24px;"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>Suggestions</h2>
+        ${suggestions}
+        <h2 style="margin-top:20px;"><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Summary</h2>
+        <div class="summary-box">${r.summary}</div>
+      </div>`;
+  });
+}
+
+// ---------- HISTORY ----------
+async function loadHistory(){
+  const el = document.getElementById('historyContent');
+  el.innerHTML = '<div class="empty-state">Loading...</div>';
+  try {
+    const res = await fetch(`${API_BASE}/history`);
+    const data = await res.json();
+    if(!data.history.length){
+      el.innerHTML = '<div class="empty-state">No scans yet. Run one from the Scan tab.</div>';
+      return;
+    }
+    const rows = data.history.map(h => `
+      <tr>
+        <td>${h.resume_name}</td>
+        <td class="mono">${h.match_pct}%</td>
+        <td class="mono">${h.semantic_score}%</td>
+        <td>${h.created_at}</td>
+      </tr>`).join('');
+    el.innerHTML = `<table><thead><tr><th>Resume</th><th>Match</th><th>Semantic</th><th>Date</th></tr></thead><tbody>${rows}</tbody></table>`;
+  } catch(err) {
+    el.innerHTML = `<div class="empty-state">Could not load history: ${err.message}</div>`;
+  }
+}
+
+document.getElementById('clearHistoryBtn').addEventListener('click', async () => {
+  if(!confirm('Clear all scan history? This cannot be undone.')) return;
+  try {
+    await fetch(`${API_BASE}/history`, { method: 'DELETE' });
+    loadHistory();
+  } catch(err) {
+    alert('Could not clear history: ' + err.message);
+  }
+});
+
+// ---------- BULLET REWRITER ----------
+document.getElementById('rewriteBtn').addEventListener('click', async () => {
+  const bullet = document.getElementById('bulletInput').value.trim();
+  const jd = document.getElementById('bulletJD').value.trim();
+  const output = document.getElementById('rewriteOutput');
+  const btn = document.getElementById('rewriteBtn');
+
+  if(!bullet || !jd){ alert('Please fill in both fields.'); return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Rewriting...';
+
+  try {
+    const formData = new FormData();
+    formData.append('bullet', bullet);
+    formData.append('jd_text', jd);
+    const res = await fetch(`${API_BASE}/rewrite-bullet`, { method: 'POST', body: formData });
+    const data = await res.json();
+    output.innerHTML = `<div class="summary-box" style="border-left-color:var(--accent);">${data.rewritten}</div>`;
+  } catch(err) {
+    output.innerHTML = `<div class="empty-state">Error: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Rewrite';
+  }
+});
+</script>
+</body>
+</html>
