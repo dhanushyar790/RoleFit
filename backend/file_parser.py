@@ -3,7 +3,7 @@ import PyPDF2
 import docx
 
 
-def extract_text(filename: str, file_bytes: bytes) -> str:
+def extract_text_from_bytes(filename: str, file_bytes: bytes) -> str:
     """Extract text from PDF, DOCX, or TXT bytes based on filename extension."""
     filename = filename.lower()
 

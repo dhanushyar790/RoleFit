@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from file_parser import extract_text
+from file_parser import extract_text_from_bytes
 from semantic_matcher import compute_semantic_similarity, chunk_text_similarity
 from llm_analyzer import analyze_resume_vs_jd, rewrite_bullet_point
 from database import init_db, save_result, get_history, clear_history
@@ -24,7 +24,7 @@ async def analyze(jd_text: str = Form(...), files: list[UploadFile] = File(...))
     results = []
     for f in files:
         file_bytes = await f.read()
-        resume_text = extract_text(f.filename, file_bytes)
+        resume_text = extract_text_from_bytes(f.filename, file_bytes)
 
         semantic_score = compute_semantic_similarity(resume_text, jd_text)
         llm_result = analyze_resume_vs_jd(resume_text, jd_text)
