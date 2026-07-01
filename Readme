@@ -1,76 +1,124 @@
-# 🎯 Resume vs JD Matcher — Pro Version
+# 🚀 Resume Radar
 
-An advanced AI-powered web app (Streamlit) that goes beyond simple LLM prompting:
+AI-powered Resume Screening & ATS Match Analyzer built with FastAPI, Sentence Transformers, and LLMs.
 
-## What makes this "advanced" / resume-worthy
+---
 
-| Feature | Why it matters |
-|---|---|
-| **Hybrid scoring**: LLM judgment + sentence-embedding cosine similarity | Shows you understand both LLM prompting AND classic NLP/ML (embeddings) — interviewers love this combo |
-| **Structured JSON output** from LLM (not free text parsing) | Real production pattern — robust, reliable |
-| **Skill-level semantic matching** (radar chart) | Per-skill matching, not just one overall score |
-| **SQLite history database** | Shows you can persist data, not just call an API |
-| **Batch resume comparison + ranking** | Useful for recruiters comparing multiple candidates |
-| **Bullet-point rewriter** | Extra generative feature, practical value |
-| **Multi-format support** (PDF, DOCX, TXT) | Handles real-world messy input |
+## 📌 Features
 
-## 🖥️ Still a web app (not mobile)
-Runs in browser via Streamlit. Deploy free on Streamlit Community Cloud for a public link — works fine on mobile browsers too.
+- 📄 Upload multiple resumes (PDF, DOCX, TXT)
+- 🎯 Compare resumes against Job Descriptions
+- 🧠 Semantic similarity scoring using Sentence Transformers
+- 🤖 LLM-powered ATS match analysis
+- ✅ Matching & Missing Skills Detection
+- 💡 Resume Improvement Suggestions
+- ✍️ AI Resume Bullet Rewriter
+- 📊 Resume Ranking
+- 📝 Scan History using SQLite
 
-## Project Structure
+---
+
+## 🛠️ Tech Stack
+
+### Backend
+- FastAPI
+- Python
+- SQLite
+- Sentence Transformers
+- Scikit-learn
+- OpenAI / Groq API
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### AI Models
+- all-MiniLM-L6-v2
+- GPT-4o Mini / Llama 3.1 8B Instant
+
+---
+
+## 📂 Project Structure
+
+```text
+Resume-Radar/
+│
+├── backend/
+│   ├── main.py
+│   ├── database.py
+│   ├── file_parser.py
+│   ├── semantic_matcher.py
+│   ├── llm_analyzer.py
+│   └── history.db
+│
+├── frontend/
+│   └── index.html
+│
+├── requirements.txt
+└── README.md
 ```
-resume_matcher_pro/
-├── app.py                 # Main Streamlit UI (3 tabs)
-├── file_parser.py          # PDF/DOCX/TXT text extraction
-├── semantic_matcher.py     # Embedding-based similarity (sentence-transformers)
-├── llm_analyzer.py         # LLM calls (Groq/OpenAI) with structured JSON output
-├── database.py             # SQLite history storage
-└── requirements.txt
-```
 
-## Setup
+---
 
-### 1. Install dependencies
+## ⚙️ Installation
+
 ```bash
-pip install -r requirements.txt
+git clone <repo-url>
+
+cd Resume-Radar
+
+pip install -r requirements
 ```
-Note: `sentence-transformers` will download a small model (~80MB) on first run — runs locally, no API cost for this part.
 
-### 2. Set API key (choose one)
+---
 
-**Option A — Free (Groq, recommended for learning):**
+## ▶️ Run
+
 ```bash
-export GROQ_API_KEY="your-groq-key"
-```
-Get free key: https://console.groq.com/keys
-
-**Option B — OpenAI (paid, slightly higher quality):**
-```bash
-export OPENAI_API_KEY="your-openai-key"
+uvicorn main:app --reload
 ```
 
-The code auto-detects which key is set and switches model accordingly.
+Open:
 
-### 3. Run
-```bash
-streamlit run app.py
+```
+http://127.0.0.1:8000
 ```
 
-## How It Works (architecture)
+---
 
-1. **Upload** → `file_parser.py` extracts raw text regardless of format
-2. **Semantic Score** → `semantic_matcher.py` encodes resume + JD into embeddings (MiniLM model) and computes cosine similarity — this is a pure ML signal, independent of LLM, so it's a good "second opinion" check
-3. **LLM Analysis** → `llm_analyzer.py` sends resume + JD to the LLM asking for structured JSON: match %, skills, suggestions
-4. **Skill Radar** → for each key skill the LLM identifies from the JD, we re-run embedding similarity against resume chunks to get a per-skill score → visualized as radar chart
-5. **Persistence** → every analysis is saved to SQLite so you (or a recruiter) can review history later
-6. **Batch mode** → upload multiple resumes against one JD → get a ranked leaderboard
+## 🔍 Workflow
 
-## 📌 Resume bullet point (use this!)
-> "Developed an AI-powered resume screening tool combining LLM-based structured analysis (Groq/OpenAI) with sentence-embedding semantic similarity (Sentence-Transformers), featuring batch candidate ranking, per-skill radar visualization, and persistent analysis history via SQLite."
+1. Upload Resume(s)
+2. Paste Job Description
+3. Semantic Similarity Calculation
+4. LLM Resume Analysis
+5. Skill Matching
+6. ATS Match Score Generation
+7. Resume Suggestions
+8. Resume Ranking
+9. Save Analysis History
 
-## Next-level ideas (if you want to go even further)
-- Add authentication (multi-user, save per-user history)
-- Deploy with a FastAPI backend + React frontend instead of Streamlit (shows full-stack skill)
-- Add a vector database (ChromaDB/Pinecone) to match resume against multiple JDs at once
-- Add LinkedIn job description scraping (auto-fetch JD from a URL)
-- Fine-tune a small classifier on real ATS-rejected resumes to predict pass/fail
+---
+
+## 📸 Screenshots
+
+Add screenshots here.
+
+---
+
+## 📈 Future Improvements
+
+- User Authentication
+- Export PDF Report
+- Resume Keyword Optimizer
+- Interview Question Generator
+- Recruiter Dashboard
+- Cloud Database
+- Docker Deployment
+
+---
+
+## 👨‍💻 Author
+
+**Dhanushya**
