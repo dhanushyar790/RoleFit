@@ -2,12 +2,29 @@ import os
 import json
 from openai import OpenAI
 
-client = OpenAI(
-    api_key=os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY"),
-    base_url="https://api.groq.com/openai/v1" if os.environ.get("GROQ_API_KEY") else None
-)
+_client = None
 
-MODEL = "llama-3.1-8b-instant" if os.environ.get("GROQ_API_KEY") else "gpt-4o-mini"
+
+def _get_client():
+    """Lazily create the OpenAI/Groq client so a missing API key doesn't
+    crash the whole app at import time — only when actually needed."""
+    global _client
+    if _client is None:
+        api_key = os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
+        if not api_key:
+            raise RuntimeError(
+                "No API key found. Set GROQ_API_KEY or OPENAI_API_KEY as an "
+                "environment variable before starting the server."
+            )
+        base_url = "https://api.groq.com/openai/v1" if os.environ.get("GROQ_API_KEY") else None
+        _client = OpenAI(api_key=api_key, base_url=base_url)
+    return _client
+
+
+# openai/gpt-oss-120b: strong reasoning, good accuracy, still fast on Groq's
+# free tier. (llama-3.1-8b-instant is deprecated and too weak for accurate
+# skill-matching — it was hallucinating matches/misses on real resumes.)
+MODEL = "openai/gpt-oss-120b" if os.environ.get("GROQ_API_KEY") else "gpt-4o-mini"
 
 
 def analyze_resume_vs_jd(resume_text, jd_text):
@@ -15,6 +32,8 @@ def analyze_resume_vs_jd(resume_text, jd_text):
     Returns a structured dict (parsed from JSON) with:
     match_percentage, missing_skills, matching_skills, suggestions, summary
     """
+    client = _get_client()
+
     prompt = f"""
 You are an expert technical recruiter. Compare this RESUME against this JOB DESCRIPTION.
 
@@ -65,6 +84,8 @@ Return ONLY valid JSON (no markdown, no backticks, no explanation) in exactly th
 
 def rewrite_bullet_point(bullet_text, jd_text):
     """Rewrite a single resume bullet point to better align with the JD."""
+    client = _get_client()
+
     prompt = f"""
 Rewrite this resume bullet point to be more impactful and aligned with the
 target job description. Use strong action verbs, quantify impact if possible,
