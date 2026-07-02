@@ -5,152 +5,151 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RoleFit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg: #F6F6F4;
-    --panel: #FFFFFF;
-    --panel-2: #F0F0EE;
-    --line: #E2E2DE;
-    --text: #2B2D33;
-    --muted: #84858C;
-    --primary: #5B6B73;     /* muted slate teal */
-    --primary-dim: rgba(91,107,115,0.08);
-    --accent: #A18B5F;      /* soft taupe gold */
-    --positive: #5C8A70;
-    --negative: #B06A6A;
-  }
+:root{
+  --bg: #F0F4FF;
+  --panel: #FFFFFF;
+  --panel-2: #EBF0FF;
+  --line: #D0D9F5;
+  --ink: #0F1D45;
+  --muted: #5B6B99;
+  --accent: #2563EB;
+  --accent-dim: rgba(37,99,235,0.10);
+  --accent-line: rgba(37,99,235,0.35);
+  --positive: #1D7E6A;
+  --positive-dim: rgba(29,126,106,0.09);
+  --negative: #C0394F;
+  --negative-dim: rgba(192,57,79,0.08);
+}
   *{box-sizing:border-box;}
   body{
-    margin:0; background:var(--bg); color:var(--text);
+    margin:0; background:var(--bg); color:var(--ink);
     font-family:'Inter', sans-serif;
     min-height:100vh;
   }
-  .display{font-family:'Source Serif 4', serif;}
+  .display{font-family:'Spectral', serif;}
   .mono{font-family:'JetBrains Mono', monospace;}
 
   header{
-    padding:26px 40px; display:flex; align-items:center; justify-content:space-between;
+    padding:22px 44px; display:flex; align-items:center; justify-content:space-between;
     border-bottom:1px solid var(--line); background:var(--panel);
   }
   .brand{display:flex; align-items:center; gap:14px;}
   .brand-mark{
-    width:38px; height:38px; border-radius:8px;
-    background:var(--primary); position:relative;
-    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px; flex-shrink:0;
   }
-  .brand-mark svg{width:20px; height:20px; stroke:#fff;}
-  .icon-sm{width:15px; height:15px; stroke:currentColor; vertical-align:-3px; margin-right:6px;}
+  .icon-sm{width:14px; height:14px; stroke:currentColor; vertical-align:-2.5px; margin-right:6px;}
   h2 svg.icon-sm{stroke:var(--muted);}
   .tab svg.icon-sm{stroke:currentColor; margin-right:5px;}
-  .brand h1{font-size:20px; margin:0; font-weight:700; letter-spacing:0.2px;}
-  .brand p{margin:0; font-size:12px; color:var(--muted);}
+  .brand h1{font-size:19px; margin:0; font-weight:700; letter-spacing:0.3px;}
+  .brand p{margin:0; font-size:11.5px; color:var(--muted); font-family:'JetBrains Mono',monospace; letter-spacing:0.3px;}
 
-  main{max-width:1180px; margin:0 auto; padding:48px 40px 100px;}
+  main{max-width:1180px; margin:0 auto; padding:46px 44px 100px;}
 
-  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
   .panel{
-    background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:26px;
-    box-shadow:0 1px 2px rgba(27,35,48,0.04);
+    background:var(--panel); border:1px solid var(--line); border-radius:3px; padding:26px;
   }
-  .panel h2{font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:0 0 16px; font-weight:600;}
+  .panel h2{font-size:11.5px; text-transform:uppercase; letter-spacing:1.4px; color:var(--muted); margin:0 0 16px; font-weight:600; font-family:'JetBrains Mono',monospace;}
 
   .dropzone{
-    border:1.5px dashed var(--line); border-radius:6px; padding:30px 20px; text-align:center;
+    border:1.5px dashed var(--line); border-radius:3px; padding:30px 20px; text-align:center;
     cursor:pointer; transition:.2s; background:var(--panel-2);
   }
-  .dropzone:hover{border-color:var(--primary);}
-  .dropzone.has-files{border-color:var(--primary); background:var(--primary-dim);}
-  .dropzone .icon{font-size:22px; margin-bottom:8px; display:block; color:var(--primary);}
+  .dropzone:hover{border-color:var(--accent);}
+  .dropzone.has-files{border-color:var(--accent); background:var(--accent-dim);}
   .dropzone p{margin:4px 0; font-size:13px; color:var(--muted);}
-  .filelist{margin-top:12px; text-align:left; font-size:13px;}
-  .filelist div{padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:5px; margin-bottom:6px; display:flex; justify-content:space-between;}
+  .dropzone p strong{color:var(--ink);}
+  .filelist{margin-top:12px; text-align:left; font-size:12.5px;}
+  .filelist div{padding:6px 10px; background:var(--panel); border:1px solid var(--line); border-radius:3px; margin-bottom:6px; display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace;}
 
   textarea{
     width:100%; min-height:170px; resize:vertical; background:var(--panel-2);
-    border:1px solid var(--line); border-radius:6px; color:var(--text); padding:14px;
+    border:1px solid var(--line); border-radius:3px; color:var(--ink); padding:14px;
     font-family:'Inter',sans-serif; font-size:13.5px; line-height:1.6;
   }
-  textarea:focus{outline:none; border-color:var(--primary);}
+  textarea:focus{outline:none; border-color:var(--accent);}
 
   .btn{
-    margin-top:24px; width:100%; padding:14px; border-radius:6px; border:none;
-    background:var(--primary); color:#fff; font-weight:600; font-size:14.5px;
+    margin-top:24px; width:100%; padding:14px; border-radius:3px; border:none;
+    background:var(--ink); color:#fff; font-weight:600; font-size:14px;
     cursor:pointer; transition:.15s; font-family:'Inter',sans-serif;
     letter-spacing:0.2px;
   }
-  .btn:hover{background:#49565D;}
+  .btn:hover{background:var(--accent);}
   .btn:disabled{opacity:.5; cursor:not-allowed;}
 
   .btn-secondary{
-    margin-top:18px; width:auto; padding:10px 18px; border-radius:6px;
+    margin-top:18px; width:auto; padding:10px 18px; border-radius:3px;
     border:1px solid var(--negative); background:transparent; color:var(--negative);
-    font-weight:600; font-size:13px; cursor:pointer; font-family:'Inter',sans-serif;
+    font-weight:600; font-size:12.5px; cursor:pointer; font-family:'JetBrains Mono',monospace;
   }
-  .btn-secondary:hover{background:rgba(162,59,59,0.06);}
+  .btn-secondary:hover{background:var(--negative-dim);}
 
-  .tabs{display:flex; gap:6px; margin:36px 0 22px; border-bottom:1px solid var(--line);}
+  .tabs{display:flex; gap:4px; margin:36px 0 22px; border-bottom:1px solid var(--line);}
   .tab{
-    padding:10px 18px; cursor:pointer; color:var(--muted); font-size:14px; font-weight:500;
-    border-bottom:2px solid transparent;
+    padding:10px 16px; cursor:pointer; color:var(--muted); font-size:13px; font-weight:600;
+    border-bottom:2px solid transparent; font-family:'JetBrains Mono',monospace; letter-spacing:0.3px;
+    text-transform:uppercase;
   }
-  .tab.active{color:var(--primary); border-color:var(--primary); font-weight:600;}
+  .tab.active{color:var(--ink); border-color:var(--accent);}
 
   .hidden{display:none !important;}
 
-  /* Score gauge - static, professional ring (no sweep animation) */
+  /* Signature element: calibration dial — instrument-style match gauge */
   .radar-gauge{
-    width:200px; height:200px; margin:0 auto; position:relative; border-radius:50%;
-    background:var(--panel-2);
-    border:1px solid var(--line);
+    width:200px; height:200px; margin:0 auto; position:relative;
   }
   .radar-gauge svg{position:absolute; inset:0;}
-  .radar-gauge .ring{fill:none; stroke:var(--line); stroke-width:1;}
   .radar-score{
     position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
   }
-  .radar-score .num{font-size:38px; font-weight:700; font-family:'Source Serif 4',serif; color:var(--primary);}
-  .radar-score .label{font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-top:2px;}
+  .radar-score .num{font-size:36px; font-weight:700; font-family:'Spectral',serif; color:var(--ink);}
+  .radar-score .label{font-size:10px; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; font-family:'JetBrains Mono',monospace;}
 
-  .stat-row{display:flex; gap:14px; margin-top:20px;}
-  .stat-card{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:6px; padding:14px 16px;}
-  .stat-card .v{font-size:22px; font-weight:700; font-family:'Source Serif 4',serif;}
-  .stat-card .l{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px;}
+  .stat-row{display:flex; gap:12px; margin-top:20px;}
+  .stat-card{flex:1; background:var(--panel-2); border:1px solid var(--line); border-radius:3px; padding:14px 16px; border-top:2px solid var(--ink);}
+  .stat-card.miss{border-top-color:var(--negative);}
+  .stat-card.match{border-top-color:var(--positive);}
+  .stat-card .v{font-size:22px; font-weight:700; font-family:'Spectral',serif;}
+  .stat-card .l{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; font-family:'JetBrains Mono',monospace;}
 
   .skill-chip{
-    display:inline-block; padding:5px 12px; margin:4px 5px 0 0; border-radius:4px; font-size:12.5px;
+    display:inline-block; padding:5px 11px; margin:4px 5px 0 0; border-radius:2px; font-size:12px;
+    font-family:'JetBrains Mono',monospace;
   }
-  .skill-chip.match{background:rgba(46,125,91,0.10); color:var(--positive); border:1px solid rgba(46,125,91,0.3);}
-  .skill-chip.miss{background:rgba(162,59,59,0.08); color:var(--negative); border:1px solid rgba(162,59,59,0.25);}
+  .skill-chip.match{background:var(--positive-dim); color:var(--positive); border:1px solid rgba(63,122,92,0.3);}
+  .skill-chip.miss{background:var(--negative-dim); color:var(--negative); border:1px solid rgba(178,59,59,0.25);}
 
   .suggestion-item{
     display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.6;
   }
   .suggestion-item:last-child{border-bottom:none;}
-  .suggestion-item .bullet{color:var(--accent); flex-shrink:0;}
+  .suggestion-item .bullet{color:var(--accent); flex-shrink:0; font-family:'JetBrains Mono',monospace;}
 
   .summary-box{
-    background:var(--panel-2); border-left:3px solid var(--primary); border-radius:4px;
-    padding:14px 16px; font-size:13.5px; line-height:1.6; color:var(--muted); margin-top:6px;
+    background:var(--panel-2); border-left:2px solid var(--ink); border-radius:0 3px 3px 0;
+    padding:14px 16px; font-size:13.5px; line-height:1.6; color:var(--ink); margin-top:6px;
   }
 
   table{width:100%; border-collapse:collapse; font-size:13px;}
-  th{text-align:left; color:var(--muted); font-weight:600; padding:10px 12px; border-bottom:1px solid var(--line); text-transform:uppercase; font-size:11px; letter-spacing:.5px;}
+  th{text-align:left; color:var(--muted); font-weight:600; padding:10px 12px; border-bottom:1px solid var(--ink); text-transform:uppercase; font-size:10.5px; letter-spacing:.5px; font-family:'JetBrains Mono',monospace;}
   td{padding:12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tr:first-child td{font-weight:600;}
 
-  .empty-state{text-align:center; padding:60px 20px; color:var(--muted);}
-  .empty-state .icon{font-size:28px; display:block; margin-bottom:10px; opacity:.6;}
+  .empty-state{text-align:center; padding:60px 20px; color:var(--muted); font-size:13.5px;}
 
   .spinner{
-    width:16px; height:16px; border:2.5px solid rgba(255,255,255,0.35); border-top-color:#fff;
+    width:14px; height:14px; border:2px solid rgba(255,255,255,0.35); border-top-color:#fff;
     border-radius:50%; display:inline-block; animation:spin .7s linear infinite; vertical-align:middle; margin-right:8px;
   }
   @keyframes spin{ to{transform:rotate(360deg);} }
 
   .result-card{margin-bottom:22px;}
   .result-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
-  .result-head .fname{font-weight:600; font-size:15px;}
-  .badge{font-size:11px; padding:4px 10px; border-radius:4px; background:var(--panel-2); color:var(--muted); border:1px solid var(--line);}
+  .result-head .fname{font-weight:600; font-size:15px; font-family:'Spectral',serif;}
+  .badge{font-size:10.5px; padding:4px 10px; border-radius:2px; background:var(--panel-2); color:var(--muted); border:1px solid var(--line); font-family:'JetBrains Mono',monospace;}
 
   @media(max-width:860px){
     .grid-2{grid-template-columns:1fr;}
@@ -164,11 +163,15 @@
 <header>
   <div class="brand">
     <div class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><path d="M11 8v3l2 2"></path></svg>
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="9.5" stroke="var(--ink)" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="5.5" stroke="var(--ink)" stroke-width="1.6"/>
+        <circle cx="12" cy="12" r="2" fill="var(--accent)"/>
+      </svg>
     </div>
     <div>
       <h1 class="display">RoleFit</h1>
-      <p>Resume-to-role fit analysis</p>
+      <p>RESUME &middot; ROLE &middot; FIT</p>
     </div>
   </div>
 </header>
@@ -186,7 +189,7 @@
       <div class="panel">
         <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Resume(s)</h2>
         <div class="dropzone" id="dropzone">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;margin:0 auto 8px;display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;margin:0 auto 8px;display:block;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           <p><strong>Click to upload</strong> or drag files here</p>
           <p>PDF, DOCX or TXT — multiple files supported</p>
           <input type="file" id="fileInput" multiple accept=".pdf,.docx,.txt" style="display:none">
@@ -224,7 +227,7 @@
       </div>
       <div class="panel">
         <h2><svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Improved Version</h2>
-        <div id="rewriteOutput" class="empty-state"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;margin:0 auto 10px;display:block;opacity:.6;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>Your improved bullet point will appear here</div>
+        <div id="rewriteOutput" class="empty-state">Your improved bullet point will appear here</div>
       </div>
     </div>
   </section>
@@ -301,13 +304,36 @@ document.getElementById('scanBtn').addEventListener('click', async () => {
   }
 });
 
+function gaugeSVG(pct){
+  const r = 86, cx = 100, cy = 100;
+  const circumference = 2 * Math.PI * r;
+  const offset = circumference * (1 - pct/100);
+  let ticks = '';
+  for(let i = 0; i < 40; i++){
+    const angle = (i / 40) * 2 * Math.PI - Math.PI/2;
+    const isMajor = i % 5 === 0;
+    const r1 = isMajor ? 94 : 97;
+    const r2 = 100;
+    const x1 = cx + r1 * Math.cos(angle), y1 = cy + r1 * Math.sin(angle);
+    const x2 = cx + r2 * Math.cos(angle), y2 = cy + r2 * Math.sin(angle);
+    ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--line)" stroke-width="${isMajor?1.5:1}"/>`;
+  }
+  return `<svg viewBox="0 0 200 200">
+    ${ticks}
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--panel-2)" stroke-width="8"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--accent)" stroke-width="8"
+      stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"
+      stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>
+  </svg>`;
+}
+
 function renderResults(results){
   const resultsEl = document.getElementById('results');
 
   if(results.length > 1){
     let rankRows = results
       .slice().sort((a,b) => b.match_percentage - a.match_percentage)
-      .map((r,i) => `<tr><td>#${i+1}</td><td>${r.filename}</td><td>${r.match_percentage}%</td><td>${r.semantic_score}%</td></tr>`)
+      .map((r,i) => `<tr><td class="mono">${String(i+1).padStart(2,'0')}</td><td>${r.filename}</td><td class="mono">${r.match_percentage}%</td><td class="mono">${r.semantic_score}%</td></tr>`)
       .join('');
     resultsEl.innerHTML += `
       <div class="panel" style="margin-bottom:22px;">
@@ -320,25 +346,26 @@ function renderResults(results){
   results.forEach(r => {
     const matchChips = (r.matching_skills||[]).map(s => `<span class="skill-chip match">${s}</span>`).join('') || '<span style="color:var(--muted); font-size:13px;">None detected</span>';
     const missChips = (r.missing_skills||[]).map(s => `<span class="skill-chip miss">${s}</span>`).join('') || '<span style="color:var(--muted); font-size:13px;">None — strong coverage</span>';
-    const suggestions = (r.improvement_suggestions||[]).map(s => `<div class="suggestion-item"><span class="bullet">&mdash;</span><span>${s}</span></div>`).join('');
+    const suggestions = (r.improvement_suggestions||[]).map(s => `<div class="suggestion-item"><span class="bullet">&rarr;</span><span>${s}</span></div>`).join('');
 
     resultsEl.innerHTML += `
       <div class="panel result-card">
         <div class="result-head">
           <span class="fname">${r.filename}</span>
-          <span class="badge">Semantic ${r.semantic_score}%</span>
+          <span class="badge mono">SEMANTIC ${r.semantic_score}%</span>
         </div>
         <div class="grid-2">
           <div>
             <div class="radar-gauge">
+              ${gaugeSVG(r.match_percentage)}
               <div class="radar-score">
                 <span class="num mono">${r.match_percentage}%</span>
-                <span class="label">Match</span>
+                <span class="label">Fit Score</span>
               </div>
             </div>
             <div class="stat-row">
-              <div class="stat-card"><div class="v mono">${(r.matching_skills||[]).length}</div><div class="l">Matched</div></div>
-              <div class="stat-card"><div class="v mono">${(r.missing_skills||[]).length}</div><div class="l">Missing</div></div>
+              <div class="stat-card match"><div class="v mono">${(r.matching_skills||[]).length}</div><div class="l">Matched</div></div>
+              <div class="stat-card miss"><div class="v mono">${(r.missing_skills||[]).length}</div><div class="l">Missing</div></div>
             </div>
           </div>
           <div>
@@ -372,7 +399,7 @@ async function loadHistory(){
         <td>${h.resume_name}</td>
         <td class="mono">${h.match_pct}%</td>
         <td class="mono">${h.semantic_score}%</td>
-        <td>${h.created_at}</td>
+        <td class="mono">${h.created_at}</td>
       </tr>`).join('');
     el.innerHTML = `<table><thead><tr><th>Resume</th><th>Match</th><th>Semantic</th><th>Date</th></tr></thead><tbody>${rows}</tbody></table>`;
   } catch(err) {
@@ -408,7 +435,7 @@ document.getElementById('rewriteBtn').addEventListener('click', async () => {
     formData.append('jd_text', jd);
     const res = await fetch(`${API_BASE}/rewrite-bullet`, { method: 'POST', body: formData });
     const data = await res.json();
-    output.innerHTML = `<div class="summary-box" style="border-left-color:var(--accent);">${data.rewritten}</div>`;
+    output.innerHTML = `<div class="summary-box">${data.rewritten}</div>`;
   } catch(err) {
     output.innerHTML = `<div class="empty-state">Error: ${err.message}</div>`;
   } finally {
